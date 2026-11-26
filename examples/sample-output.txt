@@ -1,0 +1,24 @@
+Service: checkout-api  ·  Severity: HIGH  ·  Confidence: 0.88
+Probable cause: OOMKilled — container exceeded its memory limit
+
+Checks (in order):
+  [ok  ] image: image registry.example.com/checkout-api:1.42.0 pulled successfully
+  [FAIL] resources: terminated reason=OOMKilled, exit code 137, memory 511Mi / 512Mi
+  [??  ] probes: no probe information in symptom
+  [ok  ] config: logs show no config error
+  [ok  ] node_pressure: node reports Ready, no pressure
+  [??  ] networking: pod is not serving; unreachability is a consequence, not a cause
+  [ok  ] scheduling: pod is scheduled on a node
+
+Signals:
+  - resources: terminated reason=OOMKilled, exit code 137, memory 511Mi / 512Mi
+
+Next steps (read-only):
+  1. kubectl describe pod checkout-api-7d9f8-abc12 -n prod
+  2. kubectl logs checkout-api-7d9f8-abc12 -n prod --previous
+  3. kubectl top pod checkout-api-7d9f8-abc12 -n prod
+
+Fix suggestion (for a human to review, NOT executed): Raise the container memory limit (and the request, so the scheduler places it honestly), then validate under load before calling it fixed.
+
+Human approval: REQUIRED — no action was executed.
+This agent is read-only by design. See docs/SECURITY.md.
